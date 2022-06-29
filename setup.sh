@@ -20,11 +20,13 @@ do
             echo "$selected $opt"
             sleep 1
             . <(wget -qO- $node_install)
+            break
             ;;
         "${options[1]}")
             echo "$selected $opt"
             sleep 1
             . <(wget -qO- $node_update)
+            break
             ;;
         "${options[2]}")
 			echo "$selected $opt"
