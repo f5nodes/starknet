@@ -1,7 +1,7 @@
 #!/bin/bash
 
-node_install=""
-node_update=""
+node_install="https://raw.githubusercontent.com/f5nodes/starknet/main/install.sh"
+node_update="https://raw.githubusercontent.com/f5nodes/starknet/main/update.sh"
 
 if [ "$language" = "uk" ]; then
 	PS3='Виберіть опцію: '
@@ -18,9 +18,13 @@ do
     case $opt in
         "${options[0]}")
             echo "$selected $opt"
+            sleep 1
+            . <(wget -qO- $node_install)
             ;;
         "${options[1]}")
             echo "$selected $opt"
+            sleep 1
+            . <(wget -qO- $node_update)
             ;;
         "${options[2]}")
 			echo "$selected $opt"
