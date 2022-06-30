@@ -15,7 +15,7 @@ source $HOME/.cargo/env
 rustup update stable --force
 cd $HOME
 rm -rf pathfinder
-git clone -b v0.2.1-alpha https://github.com/eqlabs/pathfinder.git
+git clone -b v0.2.3-alpha https://github.com/eqlabs/pathfinder.git
 cd pathfinder/py
 python3 -m venv .venv
 source .venv/bin/activate
