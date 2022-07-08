@@ -1,3 +1,4 @@
 # starknet
 
-current version: v0.2.3-alpha
+current version: v0.2.4-alpha
+install & update available
