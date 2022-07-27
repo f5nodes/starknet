@@ -6,7 +6,7 @@ rustup update stable
 rustc -V
 cd ~/pathfinder
 git fetch
-git checkout v0.2.5-alpha
+git checkout v0.2.6-alpha
 cargo build --release --bin pathfinder
 mv ~/pathfinder/target/release/pathfinder /usr/local/bin/
 cd py
