@@ -8,9 +8,9 @@ if [ "$language" = "uk" ]; then
 	options=("Встановити ноду" "Оновити ноду" "Вийти з меню")
 	selected="Ви вибрали опцію"
 else
-	PS3='Enter your option: '
-	options=("Install the node" "Update the node" "Quit")
-	selected="You choose the option"
+    PS3='Enter your option: '
+    options=("Install the node" "Update the node" "Quit")
+    selected="You choose the option"
 fi
 
 select opt in "${options[@]}"
