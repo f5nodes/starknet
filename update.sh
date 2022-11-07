@@ -6,12 +6,12 @@ rustup update stable
 rustc -V
 cd ~/pathfinder
 git fetch
-git checkout v0.3.7
+git checkout v0.3.8
 cargo build --release --bin pathfinder
 mv ~/pathfinder/target/release/pathfinder /usr/local/bin/
 cd py
 source .venv/bin/activate
-PIP_REQUIRE_VIRTUALENV=true pip install -r requirements-dev.txt
+PIP_REQUIRE_VIRTUALENV=true pip install -e .[dev]
 systemctl restart starknetd
 
 if [ "$language" = "uk" ]; then

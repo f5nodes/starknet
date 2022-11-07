@@ -15,12 +15,12 @@ source $HOME/.cargo/env
 rustup update stable --force
 cd $HOME
 rm -rf pathfinder
-git clone -b v0.3.7 https://github.com/eqlabs/pathfinder.git
+git clone -b v0.3.8 https://github.com/eqlabs/pathfinder.git
 cd pathfinder/py
 python3 -m venv .venv
 source .venv/bin/activate
 PIP_REQUIRE_VIRTUALENV=true pip install --upgrade pip
-PIP_REQUIRE_VIRTUALENV=true pip install -r requirements-dev.txt
+PIP_REQUIRE_VIRTUALENV=true pip install -e .[dev]
 pytest
 cargo build --release --bin pathfinder
 sleep 2
