@@ -1,6 +1,6 @@
 # starknet
 
-version: 0.3.8
+version: v0.4.0
 
 ## Installing
 
