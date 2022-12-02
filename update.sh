@@ -1,24 +1,17 @@
 #!/bin/bash
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-source $HOME/.cargo/env
-rustup update stable
-rustc -V
-cd ~/pathfinder
-git fetch
-git checkout v0.4.0
-cargo build --release --bin pathfinder
-mv ~/pathfinder/target/release/pathfinder /usr/local/bin/
-cd py
-source .venv/bin/activate
-PIP_REQUIRE_VIRTUALENV=true pip install -e .[dev]
-systemctl restart starknetd
+cd $HOME/pathfinder
+docker-compose down
+docker-compose pull
+docker-compose up -d
 
-if [ "$language" = "uk" ]; then
-	echo -e "\n\033[0;94mНода успішно оновлена до актуальної версії!"
-	echo -e "\033[0;93mПоточна версія ноди:"
+if [ -z `docker-compose ps -q starknet-node` ] || [ -z `docker ps -q --no-trunc | grep $(docker-compose ps -q starknet-node)` ]; then
+  echo -e "\nВаша StarkNet нода \e[31mбула оновлена неправильно\e[0m, виконайте перевстановлення."
 else
-	echo -e "\n\033[0;94mNode was successfully updated!"
-	echo -e "\033[0;93mCurrent node version:"
+  echo -e "\nВаша StarkNet нода \e[32mоновлена та працює\e[0m!"
+  echo -e "Перевірити логи Вашої ноди можна командою \e[92mdocker-compose -f $HOME/pathfinder/docker-compose.yml logs -f --tail=100\e[0m"
+  echo -e "Нажміть \e[7mQ\e[0m щоб вийти з статус меню"
 fi
-pathfinder -V
+
+# if [ "$language" = "uk" ]; then
+# fi

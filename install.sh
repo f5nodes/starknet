@@ -1,4 +1,5 @@
 #!/bin/bash
+
 if [ ! $ALCHEMY_KEY ]; then
   read -p "Твоє посилання з Alchemy (Приклад: https://eth-goerli.alchemyapi.io/v2/secret): " ALCHEMY_KEY
 fi
@@ -25,9 +26,9 @@ sleep 1
 docker-compose up -d
 
 if [ -z `docker-compose ps -q starknet-node` ] || [ -z `docker ps -q --no-trunc | grep $(docker-compose ps -q starknet-node)` ]; then
-  echo -e "Ваша StarkNet нода \e[31mбула встановлена неправильно\e[39m, виконайте перевстановлення."
+  echo -e "\nВаша StarkNet нода \e[31mбула встановлена неправильно\e[0m, виконайте перевстановлення."
 else
-  echo -e "Ваша StarkNet нода \e[32mвстановлена та працює\e[39m!"
-  echo -e "Перевірити статус Вашої ноди можна командою \e[7mservice starknetd status\e[0m"
+  echo -e "\nВаша StarkNet нода \e[32mвстановлена та працює\e[0m!"
+  echo -e "Перевірити логи Вашої ноди можна командою \e[92mdocker-compose -f $HOME/pathfinder/docker-compose.yml logs -f --tail=100\e[0m"
   echo -e "Нажміть \e[7mQ\e[0m щоб вийти з статус меню"
 fi
