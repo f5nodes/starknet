@@ -1,6 +1,6 @@
 # starknet
 
-version: v0.4.0
+version: v0.4.2
 
 ## Installing
 
@@ -15,7 +15,7 @@ version: v0.4.0
 #### Check node logs:
 
 ```sh
-journalctl -u starknetd -f
+docker-compose -f $HOME/pathfinder/docker-compose.yml logs -f --tail=100
 ```
 
 **CTRL + C** to exit logs
@@ -23,15 +23,11 @@ journalctl -u starknetd -f
 #### Restart the node:
 
 ```sh
-systemctl restart starknetd
+docker-compose -f $HOME/pathfinder/docker-compose.yml restart
 ```
 
-#### Delete node:
+#### Stop the node:
 
 ```sh
-systemctl stop starknetd
-systemctl disable starknetd
-rm -rf ~/pathfinder/
-rm -rf /etc/systemd/system/starknetd.service
-rm -rf /usr/local/bin/pathfinder
+docker-compose -f $HOME/pathfinder/docker-compose.yml down
 ```

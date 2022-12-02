@@ -1,57 +1,33 @@
 #!/bin/bash
-exists()
-{
-  command -v "$1" >/dev/null 2>&1
-}
-if exists curl; then
-  echo ''
-else
-  sudo apt install curl -y < "/dev/null"
+if [ ! $ALCHEMY_KEY ]; then
+  read -p "Твоє посилання з Alchemy (Приклад: https://eth-goerli.alchemyapi.io/v2/secret): " ALCHEMY_KEY
 fi
+echo 'Твій лінк: ' $ALCHEMY_KEY
 sleep 1
-sudo apt update -y && sudo apt install curl git tmux python3 python3-venv python3-dev build-essential libgmp-dev pkg-config libssl-dev -y
-sudo curl https://sh.rustup.rs -sSf | sh -s -- -y
-source $HOME/.cargo/env
-rustup update stable --force
-cd $HOME
-rm -rf pathfinder
-git clone -b v0.4.0 https://github.com/eqlabs/pathfinder.git
-cd pathfinder/py
-python3 -m venv .venv
-source .venv/bin/activate
-PIP_REQUIRE_VIRTUALENV=true pip install --upgrade pip
-PIP_REQUIRE_VIRTUALENV=true pip install -e .[dev]
-pytest
-cargo build --release --bin pathfinder
-sleep 2
+echo 'export ALCHEMY_KEY='$ALCHEMY_KEY >> $HOME/.bash_profile
+
+sudo apt update
+sudo apt install mc wget curl git htop net-tools unzip jq build-essential ncdu tmux -y
+bash <(curl -s https://raw.githubusercontent.com/f5nodes/root/main/install/docker.sh) &>/dev/null
+
+git clone https://github.com/eqlabs/pathfinder.git
+cd $HOME/pathfinder
+git fetch
+git checkout `curl https://api.github.com/repos/eqlabs/pathfinder/releases/latest -s | jq .name -r`
+
 source $HOME/.bash_profile
-mv ~/pathfinder/target/release/pathfinder /usr/local/bin/
+echo "PATHFINDER_ETHEREUM_API_URL=$ALCHEMY_KEY" > pathfinder-var.env
 
-echo "[Unit]
-Description=StarkNet
-After=network.target
+docker-compose pull
+mkdir -p $HOME/pathfinder/pathfinder
+chown -R 1000.1000 .
+sleep 1
+docker-compose up -d
 
-[Service]
-User=$USER
-Type=simple
-WorkingDirectory=$HOME/pathfinder/py
-ExecStart=/bin/bash -c \"source $HOME/pathfinder/py/.venv/bin/activate && /usr/local/bin/pathfinder --http-rpc=\"0.0.0.0:9545\" --ethereum.url $ALCHEMY\"
-Restart=on-failure
-LimitNOFILE=65535
-
-[Install]
-WantedBy=multi-user.target" > $HOME/starknetd.service
-mv $HOME/starknetd.service /etc/systemd/system/
-sudo systemctl restart systemd-journald
-sudo systemctl daemon-reload
-sudo systemctl enable starknetd
-sudo systemctl restart starknetd
-echo "==================================================="
-echo -e '\n\e[42mПеревірити статус ноди:\e[0m\n' && sleep 1
-if [[ `service starknetd status | grep active` =~ "running" ]]; then
-  echo -e "Ваша StarkNet нода \e[32mвстановлена та працює\e[39m!"
-  echo -e "Перевірити статус Вашої ноди можна командою \e[7mservice starknetd status\e[0m"
-  echo -e "Нажміть \e[7mQ\e[0m щоб вийти з статус меню"
-else
-  echo -e "Ваша StarkNet нода \e[31mбула встановлена неправильно\e[39m, виконайте перевстановлення."
-fi
+# if [[ `service starknetd status | grep active` =~ "running" ]]; then
+#   echo -e "Ваша StarkNet нода \e[32mвстановлена та працює\e[39m!"
+#   echo -e "Перевірити статус Вашої ноди можна командою \e[7mservice starknetd status\e[0m"
+#   echo -e "Нажміть \e[7mQ\e[0m щоб вийти з статус меню"
+# else
+#   echo -e "Ваша StarkNet нода \e[31mбула встановлена неправильно\e[39m, виконайте перевстановлення."
+# fi
