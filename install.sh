@@ -24,10 +24,10 @@ chown -R 1000.1000 .
 sleep 1
 docker-compose up -d
 
-# if [[ `service starknetd status | grep active` =~ "running" ]]; then
-#   echo -e "Ваша StarkNet нода \e[32mвстановлена та працює\e[39m!"
-#   echo -e "Перевірити статус Вашої ноди можна командою \e[7mservice starknetd status\e[0m"
-#   echo -e "Нажміть \e[7mQ\e[0m щоб вийти з статус меню"
-# else
-#   echo -e "Ваша StarkNet нода \e[31mбула встановлена неправильно\e[39m, виконайте перевстановлення."
-# fi
+if [ -z `docker-compose ps -q starknet-node` ] || [ -z `docker ps -q --no-trunc | grep $(docker-compose ps -q starknet-node)` ]; then
+  echo -e "Ваша StarkNet нода \e[31mбула встановлена неправильно\e[39m, виконайте перевстановлення."
+else
+  echo -e "Ваша StarkNet нода \e[32mвстановлена та працює\e[39m!"
+  echo -e "Перевірити статус Вашої ноди можна командою \e[7mservice starknetd status\e[0m"
+  echo -e "Нажміть \e[7mQ\e[0m щоб вийти з статус меню"
+fi
