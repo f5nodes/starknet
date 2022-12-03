@@ -31,3 +31,19 @@ docker-compose -f $HOME/pathfinder/docker-compose.yml restart
 ```sh
 docker-compose -f $HOME/pathfinder/docker-compose.yml down
 ```
+
+#### Clear database:
+
+```sh
+cd $HOME/pathfinder/
+
+docker-compose down -v
+
+rm -rf $HOME/pathfinder/pathfinder
+
+mkdir -p $HOME/pathfinder/pathfinder
+
+chown -R 1000.1000 .
+
+docker-compose up -d
+```
