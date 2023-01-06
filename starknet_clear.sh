@@ -10,6 +10,9 @@ while true; do
         mkdir -p $HOME/pathfinder/pathfinder
         chown -R 1000.1000 .
         docker-compose up -d
+        echo "[$(date)] Starknet DB file was succesfully cleared!"
+    else
+        echo "[$(date)] Starknet DB file size is $(du -h pathfinder/pathfinder/goerli.sqlite | cut -f1), waiting 100 GB.."
     fi
     # Wait 1 hour
     sleep 3600
