@@ -47,3 +47,5 @@ chown -R 1000.1000 .
 
 docker-compose up -d
 ```
+
+#### Install Starknet Clear Script
