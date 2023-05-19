@@ -1,8 +1,11 @@
 #!/bin/bash
 
+threshold_size=$(( $1 * 1024 * 1024 * 1024 ))
+database_file="$HOME/pathfinder/pathfinder/goerli.sqlite"
+
 while true; do
-    # Check if the size of the DB is over 100 GB
-    if [ $(du -h $HOME/pathfinder/pathfinder/goerli.sqlite | cut -f1 | sed 's/G//') -gt 100 ]; then
+    # Check if the size of the DB is over the threshold size
+    if [ "$(stat -c "%s" "$database_file")" -gt "$threshold_size" ]; then
         # Clear database and restart the node
         cd $HOME/pathfinder/
         docker-compose down -v
@@ -10,11 +13,10 @@ while true; do
         mkdir -p $HOME/pathfinder/pathfinder
         chown -R 1000.1000 .
         docker-compose up -d
-        echo "[$(date)] Starknet DB file was succesfully cleared!"
+        echo "[$(date)] Starknet DB file was successfully cleared!"
     else
-        echo "[$(date)] Starknet DB file size is $(du -h $HOME/pathfinder/pathfinder/goerli.sqlite | cut -f1), waiting 100 GB.."
+		  echo "[$(date)] Starknet DB file size is $(stat -c "%s" "$database_file"), waiting $1 GB.."
     fi
     # Wait 1 hour
     sleep 3600
 done
-
