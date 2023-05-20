@@ -15,7 +15,9 @@ while true; do
         docker-compose up -d
         echo "[$(date)] Starknet DB file was successfully cleared!"
     else
-		  echo "[$(date)] Starknet DB file size is $(stat -c "%s" "$database_file"), waiting $1 GB.."
+	 	  size_bytes=$(stat -c "%s" "$database_file")
+		  size_gb=$(( size_bytes / (1024 * 1024 * 1024) ))
+        echo "[$(date)] Starknet DB file size is ${size_gb}GB, waiting $1 GB.."
     fi
     # Wait 1 hour
     sleep 3600
