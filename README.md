@@ -48,4 +48,16 @@ chown -R 1000.1000 .
 docker-compose up -d
 ```
 
+## Startknet Clear DB Script
+
 #### Install Starknet Clear Script
+```sh
+. <(wget -qO- sh.f5nodes.com) starknet
+```
+and selected 3 option.
+
+#### Uninstall Starknet Clear Script
+```sh
+pkill -f starknet_clear.sh
+rm -rf starknet_clear.*
+```

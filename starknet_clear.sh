@@ -17,7 +17,7 @@ while true; do
     else
 	 	  size_bytes=$(stat -c "%s" "$database_file")
 		  size_gb=$(( size_bytes / (1024 * 1024 * 1024) ))
-        echo "[$(date)] Starknet DB file size is ${size_gb}GB, waiting $1 GB.."
+        echo "[$(date)] Starknet DB file size is ${size_gb} GB, waiting $1 GB.."
     fi
     # Wait 1 hour
     sleep 3600
